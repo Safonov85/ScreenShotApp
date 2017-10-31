@@ -14,10 +14,12 @@ namespace ScreenShotApp
 {
 	public partial class MainForm : Form
 	{
+		
 		TakeScreenShot takeScreenShot = new TakeScreenShot();
 		public MainForm()
 		{
 			InitializeComponent();
+			
 		}
 
 		private void TakeSSButton_Click(object sender, EventArgs e)
@@ -32,5 +34,6 @@ namespace ScreenShotApp
 			takeScreenShot.qualityAmount = trackBar1.Value;
 			QualityAmountLabel.Text = trackBar1.Value.ToString();
 		}
+
 	}
 }

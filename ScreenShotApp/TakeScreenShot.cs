@@ -30,6 +30,7 @@ namespace ScreenShotApp
 			string desktopPath = Environment.GetFolderPath(System.Environment.SpecialFolder.DesktopDirectory);
 			screen.Save(desktopPath + "\\" + DateTime.Now.ToShortDateString() + DateTime.Now.Hour.ToString() + DateTime.Now.Minute.ToString() +
 				DateTime.Now.Second.ToString() + "Quality_" + quality.ToString() + ".jpg", jpgEncoder, myEncoderParameters);
+			CreateNewScreen(screen);
 			graphics.Dispose();
 		}
 
@@ -44,6 +45,17 @@ namespace ScreenShotApp
 				}
 			}
 			return null;
+		}
+
+		void CreateNewScreen(Image picture)
+		{
+			Form form = new Form();
+			form.Text = "Image Viewer";
+			PictureBox pictureBox = new PictureBox();
+			pictureBox.Image = picture;
+			pictureBox.Dock = DockStyle.Fill;
+			form.Controls.Add(pictureBox);
+			form.ShowDialog();
 		}
 	}
 }
