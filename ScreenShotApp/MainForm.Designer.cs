@@ -32,6 +32,7 @@
 			this.trackBar1 = new System.Windows.Forms.TrackBar();
 			this.QualityLabel = new System.Windows.Forms.Label();
 			this.QualityAmountLabel = new System.Windows.Forms.Label();
+			this.PicFormatComboBox = new System.Windows.Forms.ComboBox();
 			((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
 			this.SuspendLayout();
 			// 
@@ -73,11 +74,24 @@
 			this.QualityAmountLabel.TabIndex = 3;
 			this.QualityAmountLabel.Text = "100";
 			// 
+			// PicFormatComboBox
+			// 
+			this.PicFormatComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.PicFormatComboBox.FormattingEnabled = true;
+			this.PicFormatComboBox.Items.AddRange(new object[] {
+            ".JPG",
+            ".PNG"});
+			this.PicFormatComboBox.Location = new System.Drawing.Point(12, 78);
+			this.PicFormatComboBox.Name = "PicFormatComboBox";
+			this.PicFormatComboBox.Size = new System.Drawing.Size(100, 21);
+			this.PicFormatComboBox.TabIndex = 4;
+			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(290, 78);
+			this.ClientSize = new System.Drawing.Size(290, 111);
+			this.Controls.Add(this.PicFormatComboBox);
 			this.Controls.Add(this.QualityAmountLabel);
 			this.Controls.Add(this.QualityLabel);
 			this.Controls.Add(this.trackBar1);
@@ -96,6 +110,7 @@
 		private System.Windows.Forms.TrackBar trackBar1;
 		private System.Windows.Forms.Label QualityLabel;
 		private System.Windows.Forms.Label QualityAmountLabel;
+		private System.Windows.Forms.ComboBox PicFormatComboBox;
 	}
 }
 

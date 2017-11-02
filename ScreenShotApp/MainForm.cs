@@ -19,13 +19,20 @@ namespace ScreenShotApp
 		public MainForm()
 		{
 			InitializeComponent();
-			
+			PicFormatComboBox.SelectedIndex = 0;
 		}
 
 		private void TakeSSButton_Click(object sender, EventArgs e)
 		{
 			this.Opacity = 0;
-			takeScreenShot.TakeSaveScreenshoot(trackBar1.Value);
+			if(PicFormatComboBox.SelectedIndex == 0)
+			{
+				takeScreenShot.TakeSaveScreenshoot(trackBar1.Value, ".jpg");
+			}
+			else if(PicFormatComboBox.SelectedIndex == 1)
+			{
+				MessageBox.Show("PNG currently unavailable");
+			}
 			this.Opacity = 100;
 		}
 
