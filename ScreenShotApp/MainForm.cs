@@ -31,7 +31,7 @@ namespace ScreenShotApp
 			}
 			else if(PicFormatComboBox.SelectedIndex == 1)
 			{
-				MessageBox.Show("PNG currently unavailable");
+				takeScreenShot.TakeSaveScreenshoot(trackBar1.Value, ".png");
 			}
 			this.Opacity = 100;
 		}

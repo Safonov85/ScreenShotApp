@@ -18,20 +18,29 @@ namespace ScreenShotApp
 			graphics.CopyFromScreen(SystemInformation.VirtualScreen.X,
 							 SystemInformation.VirtualScreen.Y,
 							 0, 0, screen.Size);
-
-			ImageCodecInfo jpgEncoder = GetEncoder(ImageFormat.Jpeg);
-			System.Drawing.Imaging.Encoder myEncoder =
-				System.Drawing.Imaging.Encoder.Quality;
-			EncoderParameters myEncoderParameters = new EncoderParameters(1);
-
-			EncoderParameter myEncoderParameter = new EncoderParameter(myEncoder, qualityAmount);
-			myEncoderParameters.Param[0] = myEncoderParameter;
-
 			string desktopPath = Environment.GetFolderPath(System.Environment.SpecialFolder.DesktopDirectory);
-			screen.Save(desktopPath + "\\" + DateTime.Now.ToShortDateString() + DateTime.Now.Hour.ToString() + DateTime.Now.Minute.ToString() +
-				DateTime.Now.Second.ToString() + "Quality_" + quality.ToString() + format, jpgEncoder, myEncoderParameters);
-			CreateNewScreen(screen);
-			graphics.Dispose();
+
+			if (format == ".jpg")
+			{
+				ImageCodecInfo jpgEncoder = GetEncoder(ImageFormat.Jpeg);
+				System.Drawing.Imaging.Encoder myEncoder =
+					System.Drawing.Imaging.Encoder.Quality;
+				EncoderParameters myEncoderParameters = new EncoderParameters(1);
+
+				EncoderParameter myEncoderParameter = new EncoderParameter(myEncoder, qualityAmount);
+				myEncoderParameters.Param[0] = myEncoderParameter;
+				screen.Save(desktopPath + "\\" + DateTime.Now.ToShortDateString() + DateTime.Now.Hour.ToString() + DateTime.Now.Minute.ToString() +
+					DateTime.Now.Second.ToString() + "Quality_" + quality.ToString() + format, jpgEncoder, myEncoderParameters);
+				CreateNewScreen(screen);
+				graphics.Dispose();
+			}
+			else if(format == ".png")
+			{
+				screen.Save(desktopPath + "\\" + DateTime.Now.ToShortDateString() + DateTime.Now.Hour.ToString() + DateTime.Now.Minute.ToString() +
+					DateTime.Now.Second.ToString() + format, ImageFormat.Png);
+				CreateNewScreen(screen);
+				graphics.Dispose();
+			}
 		}
 
 		private ImageCodecInfo GetEncoder(ImageFormat format)
