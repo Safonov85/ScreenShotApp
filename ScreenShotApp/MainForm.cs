@@ -14,17 +14,29 @@ namespace ScreenShotApp
 {
 	public partial class MainForm : Form
 	{
+		bool changeCursor = false;
 		
 		TakeScreenShot takeScreenShot = new TakeScreenShot();
 		public MainForm()
 		{
 			InitializeComponent();
 			PicFormatComboBox.SelectedIndex = 0;
+			MessageBox.Show("Sorry temporarly not working. Coming back soon.");
 		}
 
 		private void TakeSSButton_Click(object sender, EventArgs e)
 		{
-
+			if(changeCursor == false)
+			{
+				Cursor = new Cursor("C:\\Windows\\Cursors\\size4_r.cur");
+				
+				changeCursor = true;
+			}
+			else
+			{
+				Cursor = new Cursor("C:\\Windows\\Cursors\\arrow_i.cur");
+				changeCursor = false;
+			}
 			//TakeScreenShotMethod();
 		}
 
