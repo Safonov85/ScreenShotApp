@@ -96,6 +96,8 @@
 			this.Controls.Add(this.QualityLabel);
 			this.Controls.Add(this.trackBar1);
 			this.Controls.Add(this.TakeSSButton);
+			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+			this.MaximizeBox = false;
 			this.Name = "MainForm";
 			this.Text = "Screenshot App";
 			((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();
