@@ -9,51 +9,49 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
+using System.Diagnostics;
 
 namespace ScreenShotApp
 {
 	public partial class MainForm : Form
 	{
-		bool changeCursor = false;
-		
 		TakeScreenShot takeScreenShot = new TakeScreenShot();
+
 		public MainForm()
 		{
 			InitializeComponent();
 			PicFormatComboBox.SelectedIndex = 0;
-			MessageBox.Show("Sorry temporarly not working. Coming back soon.");
 		}
 
-		public void DrawLineInt(PaintEventArgs e)
+		void SaveGraphics()
 		{
+			Bitmap image = new Bitmap(100, 100);
+			Graphics graphics = Graphics.FromImage(image);
 
-			// Create pen.
-			Pen blackPen = new Pen(Color.Black, 3);
+			//Graphics _g = pictureBox1.CreateGraphics();
+			Pen pen = new Pen(Color.Red, 1);
+			//pen.DashCap = System.Drawing.Drawing2D.DashCap.Flat;
+			pen.DashPattern = new float[] { 2.0F, 2.0F, 2.0F, 2.0F };
+			Point myPoint1 = new Point(10, 20);
+			Point myPoint2 = new Point(30, 40);
+			graphics.DrawRectangle(pen, 0, 0, 99, 99);
 
-			// Create coordinates of points that define line.
-			int x1 = 100;
-			int y1 = 100;
-			int x2 = 500;
-			int y2 = 100;
+			this.Cursor = CreateCursor(image);
+			
+			image.Dispose();
+			graphics.Dispose();
+		}
 
-			// Draw line to screen.
-			e.Graphics.DrawLine(blackPen, x1, y1, x2, y2);
+		Cursor CreateCursor(Bitmap bitmap)
+		{
+			return new Cursor(bitmap.GetHicon());
 		}
 
 		private void TakeSSButton_Click(object sender, EventArgs e)
 		{
-			if(changeCursor == false)
-			{
-				Cursor = new Cursor("C:\\Windows\\Cursors\\size4_r.cur");
-				
-				changeCursor = true;
-			}
-			else
-			{
-				Cursor = new Cursor("C:\\Windows\\Cursors\\arrow_i.cur");
-				changeCursor = false;
-			}
-			//TakeScreenShotMethod();
+			TakeScreenShotMethod();
+			//Cursor.Current = Cursors.Hand;
+			//SaveGraphics();
 		}
 
 		private void TakeScreenShotMethod()
@@ -76,5 +74,14 @@ namespace ScreenShotApp
 			QualityAmountLabel.Text = trackBar1.Value.ToString();
 		}
 
+		private void MainForm_MouseEnter(object sender, EventArgs e)
+		{
+
+		}
+
+		private void MainForm_Scroll(object sender, ScrollEventArgs e)
+		{
+			Debug.WriteLine(DateTime.Now.Second.ToString());
+		}
 	}
 }

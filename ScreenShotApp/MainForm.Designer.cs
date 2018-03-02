@@ -100,6 +100,8 @@
 			this.MaximizeBox = false;
 			this.Name = "MainForm";
 			this.Text = "Screenshot App";
+			this.Scroll += new System.Windows.Forms.ScrollEventHandler(this.MainForm_Scroll);
+			this.MouseEnter += new System.EventHandler(this.MainForm_MouseEnter);
 			((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
