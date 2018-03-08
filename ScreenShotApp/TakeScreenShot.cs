@@ -11,12 +11,24 @@ namespace ScreenShotApp
 		public Int64 qualityAmount = 100L;
 		Form form;
 		bool ctrlDown = false;
+		int formX, formY;
 
 		public TakeScreenShot()
 		{
+			formX = 400;
+			formY = 400;
 			form = new Form();
 			form.MouseWheel += new MouseEventHandler(form_MouseWheel);
 			form.Click += new System.EventHandler(form_Click);
+			form.KeyDown += new KeyEventHandler(form_KeyDown);
+		}
+
+		private void form_KeyDown(object sender, KeyEventArgs e)
+		{
+			if (e.KeyCode == Keys.Control)
+			{
+				ctrlDown = true;
+			}
 		}
 
 		private void form_Click(object sender, EventArgs e)
@@ -32,12 +44,29 @@ namespace ScreenShotApp
 			{
 				if(ctrlDown == false)
 				{
+					formX += 20;
+					form.Cursor = CreateCursor(formX, formY);
 					// rectangle expand
+				}
+				else
+				{
+					formY += 20;
+					form.Cursor = CreateCursor(formX, formY);
 				}
 			}
 			else
 			{
-				
+				if (ctrlDown == false)
+				{
+					formX -= 20;
+					form.Cursor = CreateCursor(formX, formY);
+					// rectangle expand
+				}
+				else
+				{
+					formY -= 20;
+					form.Cursor = CreateCursor(formX, formY);
+				}
 			}
 		}
 
@@ -90,13 +119,12 @@ namespace ScreenShotApp
 
 		void CreateNewScreen(Image picture)
 		{
-			
 			form.Text = "Screenshot Viewer";
 			PictureBox pictureBox = new PictureBox();
 			pictureBox.Image = picture;
 			pictureBox.Dock = DockStyle.Fill;
 			form.Controls.Add(pictureBox);
-			form.Cursor = CreateCursor();
+			form.Cursor = CreateCursor(400, 400);
 			Debug.WriteLine(DateTime.Now.Second.ToString());
 			form.FormBorderStyle = FormBorderStyle.None;
 			form.WindowState = FormWindowState.Maximized;
@@ -124,9 +152,9 @@ namespace ScreenShotApp
 			graphics.Dispose();
 		}
 
-		Cursor CreateCursor()
+		Cursor CreateCursor(int x, int y)
 		{
-			Bitmap image = new Bitmap(100, 100);
+			Bitmap image = new Bitmap(x, y);
 			Graphics graphics = Graphics.FromImage(image);
 
 			//Graphics _g = pictureBox1.CreateGraphics();
@@ -135,9 +163,10 @@ namespace ScreenShotApp
 			pen.DashPattern = new float[] { 2.0F, 2.0F, 2.0F, 2.0F };
 			Point myPoint1 = new Point(10, 20);
 			Point myPoint2 = new Point(30, 40);
-			graphics.DrawRectangle(pen, 0, 0, 99, 99);
+			graphics.DrawRectangle(pen, 0, 0, x - 1, y - 1);
 			return new Cursor(image.GetHicon());
 		}
+		
 
 	}
 }
