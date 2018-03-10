@@ -21,6 +21,15 @@ namespace ScreenShotApp
 			form.MouseWheel += new MouseEventHandler(form_MouseWheel);
 			form.Click += new System.EventHandler(form_Click);
 			form.KeyDown += new KeyEventHandler(form_KeyDown);
+			form.KeyPress += new KeyPressEventHandler(form_KeyPress);
+		}
+
+		private void form_KeyPress(object sender, KeyPressEventArgs e)
+		{
+			if(e.KeyChar == 56)
+			{
+
+			}
 		}
 
 		private void form_KeyDown(object sender, KeyEventArgs e)
