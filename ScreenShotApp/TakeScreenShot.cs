@@ -22,19 +22,25 @@ namespace ScreenShotApp
 			form.Click += new System.EventHandler(form_Click);
 			form.KeyDown += new KeyEventHandler(form_KeyDown);
 			form.KeyPress += new KeyPressEventHandler(form_KeyPress);
+			form.KeyUp += new KeyEventHandler(form_KeyUp);
+			form.KeyPreview = true;
+		}
+
+		private void form_KeyUp(object sender, KeyEventArgs e)
+		{
+			if(e.Control)
+			{
+				ctrlDown = false;
+			}
 		}
 
 		private void form_KeyPress(object sender, KeyPressEventArgs e)
 		{
-			if(e.KeyChar == 56)
-			{
-
-			}
 		}
 
 		private void form_KeyDown(object sender, KeyEventArgs e)
 		{
-			if (e.KeyCode == Keys.Control)
+			if (e.Control)
 			{
 				ctrlDown = true;
 			}
@@ -175,7 +181,5 @@ namespace ScreenShotApp
 			graphics.DrawRectangle(pen, 0, 0, x - 1, y - 1);
 			return new Cursor(image.GetHicon());
 		}
-		
-
 	}
 }
