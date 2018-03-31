@@ -83,5 +83,10 @@ namespace ScreenShotApp
 		{
 			Debug.WriteLine(DateTime.Now.Second.ToString());
 		}
+
+		private void MainForm_MouseClick(object sender, MouseEventArgs e)
+		{
+			Debug.WriteLine("Clicked MAIN");
+		}
 	}
 }

@@ -20,10 +20,28 @@ namespace ScreenShotApp
 			form = new Form();
 			form.MouseWheel += new MouseEventHandler(form_MouseWheel);
 			form.Click += new System.EventHandler(form_Click);
+			form.MouseClick += new System.Windows.Forms.MouseEventHandler(this.mouseClick);
+			form.MouseDown += new System.Windows.Forms.MouseEventHandler(mouseDown);
+			form.MouseUp += new System.Windows.Forms.MouseEventHandler(mouseUp);
 			form.KeyDown += new KeyEventHandler(form_KeyDown);
 			form.KeyPress += new KeyPressEventHandler(form_KeyPress);
 			form.KeyUp += new KeyEventHandler(form_KeyUp);
 			form.KeyPreview = true;
+		}
+
+		private void mouseUp(object sender, MouseEventArgs e)
+		{
+			Debug.WriteLine("UP m");
+		}
+
+		private void mouseDown(object sender, MouseEventArgs e)
+		{
+			Debug.WriteLine("DOWN m");
+		}
+
+		private void mouseClick(object sender, MouseEventArgs e)
+		{
+			Debug.WriteLine("Clicked");
 		}
 
 		private void form_KeyUp(object sender, KeyEventArgs e)
