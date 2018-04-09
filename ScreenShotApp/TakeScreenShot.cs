@@ -12,6 +12,7 @@ namespace ScreenShotApp
 		Form form;
 		bool ctrlDown = false;
 		int formX, formY;
+		PictureBox pictureBox = new PictureBox();
 
 		public TakeScreenShot()
 		{
@@ -27,6 +28,14 @@ namespace ScreenShotApp
 			form.KeyPress += new KeyPressEventHandler(form_KeyPress);
 			form.KeyUp += new KeyEventHandler(form_KeyUp);
 			form.KeyPreview = true;
+
+			// pictureBox CLICK WORKING!!!!!!!!!!
+			pictureBox.Click += new EventHandler(picturebox_Click);
+		}
+
+		private void picturebox_Click(object sender, EventArgs e)
+		{
+			form.Close();
 		}
 
 		private void mouseUp(object sender, MouseEventArgs e)
@@ -46,9 +55,10 @@ namespace ScreenShotApp
 
 		private void form_KeyUp(object sender, KeyEventArgs e)
 		{
-			if(e.Control)
+			if(e.KeyCode == Keys.ControlKey)
 			{
 				ctrlDown = false;
+				Debug.WriteLine("keyUp pressed");
 			}
 		}
 
@@ -61,6 +71,7 @@ namespace ScreenShotApp
 			if (e.Control)
 			{
 				ctrlDown = true;
+				Debug.WriteLine("keyDown pressed");
 			}
 		}
 
@@ -153,7 +164,7 @@ namespace ScreenShotApp
 		void CreateNewScreen(Image picture)
 		{
 			form.Text = "Screenshot Viewer";
-			PictureBox pictureBox = new PictureBox();
+			
 			pictureBox.Image = picture;
 			pictureBox.Dock = DockStyle.Fill;
 			form.Controls.Add(pictureBox);
