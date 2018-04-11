@@ -57,14 +57,7 @@ namespace ScreenShotApp
 		private void TakeScreenShotMethod()
 		{
 			this.Opacity = 0;
-			if (PicFormatComboBox.SelectedIndex == 0)
-			{
-				takeScreenShot.TakeSaveScreenshoot(trackBar1.Value, ".jpg");
-			}
-			else if (PicFormatComboBox.SelectedIndex == 1)
-			{
-				takeScreenShot.TakeSaveScreenshoot(trackBar1.Value, ".png");
-			}
+			takeScreenShot.TakeSaveScreenshoot();
 			this.Opacity = 100;
 		}
 

@@ -55,7 +55,7 @@ namespace ScreenShotApp
 
 		private void form_KeyUp(object sender, KeyEventArgs e)
 		{
-			if(e.KeyCode == Keys.ControlKey)
+			if (e.KeyCode == Keys.ControlKey)
 			{
 				ctrlDown = false;
 				Debug.WriteLine("keyUp pressed");
@@ -86,7 +86,7 @@ namespace ScreenShotApp
 			Debug.WriteLine(DateTime.Now.Second.ToString());
 			if (e.Delta == 120)
 			{
-				if(ctrlDown == false)
+				if (ctrlDown == false)
 				{
 					formX += 20;
 					form.Cursor = CreateCursor(formX, formY);
@@ -114,7 +114,7 @@ namespace ScreenShotApp
 			}
 		}
 
-		public void TakeSaveScreenshoot(int quality, string format)
+		public void TakeSaveScreenshoot()
 		{
 			Bitmap screen = new Bitmap(SystemInformation.VirtualScreen.Width,
 							 SystemInformation.VirtualScreen.Height);
@@ -123,6 +123,32 @@ namespace ScreenShotApp
 			graphics.CopyFromScreen(SystemInformation.VirtualScreen.X,
 							 SystemInformation.VirtualScreen.Y,
 							 0, 0, screen.Size);
+			string desktopPath = Environment.GetFolderPath(System.Environment.SpecialFolder.DesktopDirectory);
+
+
+			ImageCodecInfo jpgEncoder = GetEncoder(ImageFormat.Jpeg);
+			System.Drawing.Imaging.Encoder myEncoder =
+				System.Drawing.Imaging.Encoder.Quality;
+			EncoderParameters myEncoderParameters = new EncoderParameters(1);
+
+			EncoderParameter myEncoderParameter = new EncoderParameter(myEncoder, qualityAmount);
+			myEncoderParameters.Param[0] = myEncoderParameter;
+			//screen.Save(desktopPath + "\\" + DateTime.Now.ToShortDateString() + DateTime.Now.Hour.ToString() + DateTime.Now.Minute.ToString() +
+			//	DateTime.Now.Second.ToString() + "Quality_" + quality.ToString() + format, jpgEncoder, myEncoderParameters);
+			CreateNewScreen(screen);
+			graphics.Dispose();
+
+		}
+
+		void SaveCurrentPositionToPicture(int quality, string format)
+		{
+			Bitmap screen = new Bitmap(pictureBox.Image.Width, pictureBox.Image.Height);
+
+		//	Graphics graphics = Graphics.FromImage(screen);
+
+		//	graphics.CopyFromScreen(SystemInformation.VirtualScreen.X,
+		//					 SystemInformation.VirtualScreen.Y,
+		//					 0, 0, screen.Size);
 			string desktopPath = Environment.GetFolderPath(System.Environment.SpecialFolder.DesktopDirectory);
 
 			if (format == ".jpg")
@@ -137,14 +163,12 @@ namespace ScreenShotApp
 				screen.Save(desktopPath + "\\" + DateTime.Now.ToShortDateString() + DateTime.Now.Hour.ToString() + DateTime.Now.Minute.ToString() +
 					DateTime.Now.Second.ToString() + "Quality_" + quality.ToString() + format, jpgEncoder, myEncoderParameters);
 				CreateNewScreen(screen);
-				graphics.Dispose();
 			}
-			else if(format == ".png")
+			else if (format == ".png")
 			{
 				screen.Save(desktopPath + "\\" + DateTime.Now.ToShortDateString() + DateTime.Now.Hour.ToString() + DateTime.Now.Minute.ToString() +
 					DateTime.Now.Second.ToString() + format, ImageFormat.Png);
 				CreateNewScreen(screen);
-				graphics.Dispose();
 			}
 		}
 
@@ -164,7 +188,7 @@ namespace ScreenShotApp
 		void CreateNewScreen(Image picture)
 		{
 			form.Text = "Screenshot Viewer";
-			
+
 			pictureBox.Image = picture;
 			pictureBox.Dock = DockStyle.Fill;
 			form.Controls.Add(pictureBox);
@@ -202,7 +226,7 @@ namespace ScreenShotApp
 			Graphics graphics = Graphics.FromImage(image);
 
 			//Graphics _g = pictureBox1.CreateGraphics();
-			Pen pen = new Pen(Color.Red, 1);
+			Pen pen = new Pen(Color.Red, 2);
 			//pen.DashCap = System.Drawing.Drawing2D.DashCap.Flat;
 			pen.DashPattern = new float[] { 2.0F, 2.0F, 2.0F, 2.0F };
 			Point myPoint1 = new Point(10, 20);
