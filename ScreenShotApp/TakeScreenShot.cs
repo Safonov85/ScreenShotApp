@@ -11,13 +11,13 @@ namespace ScreenShotApp
 		public Int64 qualityAmount = 100L;
 		Form form;
 		bool ctrlDown = false;
-		int formX, formY;
+		int cursorSizeX, cursorSizeY;
 		PictureBox pictureBox = new PictureBox();
 
 		public TakeScreenShot()
 		{
-			formX = 400;
-			formY = 400;
+			cursorSizeX = 400;
+			cursorSizeY = 400;
 			form = new Form();
 			form.MouseWheel += new MouseEventHandler(form_MouseWheel);
 			form.Click += new System.EventHandler(form_Click);
@@ -35,6 +35,7 @@ namespace ScreenShotApp
 
 		private void picturebox_Click(object sender, EventArgs e)
 		{
+			TakeCurrentScreenshoot(Control.MousePosition.X, Control.MousePosition.Y);
 			form.Close();
 		}
 
@@ -88,30 +89,59 @@ namespace ScreenShotApp
 			{
 				if (ctrlDown == false)
 				{
-					formX += 20;
-					form.Cursor = CreateCursor(formX, formY);
+					cursorSizeX += 20;
+					form.Cursor = CreateCursor(cursorSizeX, cursorSizeY);
 					// rectangle expand
 				}
 				else
 				{
-					formY += 20;
-					form.Cursor = CreateCursor(formX, formY);
+					cursorSizeY += 20;
+					form.Cursor = CreateCursor(cursorSizeX, cursorSizeY);
 				}
 			}
 			else
 			{
 				if (ctrlDown == false)
 				{
-					formX -= 20;
-					form.Cursor = CreateCursor(formX, formY);
+					cursorSizeX -= 20;
+					form.Cursor = CreateCursor(cursorSizeX, cursorSizeY);
 					// rectangle expand
 				}
 				else
 				{
-					formY -= 20;
-					form.Cursor = CreateCursor(formX, formY);
+					cursorSizeY -= 20;
+					form.Cursor = CreateCursor(cursorSizeX, cursorSizeY);
 				}
 			}
+		}
+
+		public void TakeCurrentScreenshoot(int cursorPosX, int cursorPosY)
+		{
+			Bitmap screen = new Bitmap(cursorSizeX, cursorSizeY);
+			Graphics graphics = Graphics.FromImage(screen);
+
+			float screenCapStartX = cursorSizeX - (cursorSizeX / 2);
+			float screenCapStartY = cursorSizeY - (cursorSizeY / 2);
+			float screenCapEndX = cursorSizeX + (cursorSizeX / 2);
+			float screenCapEndY = cursorSizeY + (cursorSizeY / 2);
+
+			float screenStartX = cursorPosX - (screen.Size.Width / 2);
+			float screenStartY = cursorPosY - (screen.Size.Height / 2);
+
+			//graphics.CopyFromScreen((int)screenCapStartX, (int)screenCapStartY, (int)screenCapEndX, (int)screenCapEndY, screen.Size);
+			graphics.CopyFromScreen((int)screenStartX, (int)screenStartY, 0, 0, screen.Size);
+			string desktopPath = Environment.GetFolderPath(System.Environment.SpecialFolder.DesktopDirectory);
+
+
+			ImageCodecInfo jpgEncoder = GetEncoder(ImageFormat.Jpeg);
+			System.Drawing.Imaging.Encoder myEncoder =
+				System.Drawing.Imaging.Encoder.Quality;
+			EncoderParameters myEncoderParameters = new EncoderParameters(1);
+
+			EncoderParameter myEncoderParameter = new EncoderParameter(myEncoder, qualityAmount);
+			myEncoderParameters.Param[0] = myEncoderParameter;
+			screen.Save(desktopPath + "\\" + DateTime.Now.ToShortDateString() + DateTime.Now.Hour.ToString() + DateTime.Now.Minute.ToString() +
+				DateTime.Now.Second.ToString() + "Quality_" + qualityAmount.ToString() + ".jpg", jpgEncoder, myEncoderParameters);
 		}
 
 		public void TakeSaveScreenshoot()
@@ -137,7 +167,6 @@ namespace ScreenShotApp
 			//	DateTime.Now.Second.ToString() + "Quality_" + quality.ToString() + format, jpgEncoder, myEncoderParameters);
 			CreateNewScreen(screen);
 			graphics.Dispose();
-
 		}
 
 		void SaveCurrentPositionToPicture(int quality, string format)
@@ -192,7 +221,7 @@ namespace ScreenShotApp
 			pictureBox.Image = picture;
 			pictureBox.Dock = DockStyle.Fill;
 			form.Controls.Add(pictureBox);
-			form.Cursor = CreateCursor(400, 400);
+			form.Cursor = CreateCursor(cursorSizeX, cursorSizeY);
 			Debug.WriteLine(DateTime.Now.Second.ToString());
 			form.FormBorderStyle = FormBorderStyle.None;
 			form.WindowState = FormWindowState.Maximized;
@@ -233,6 +262,11 @@ namespace ScreenShotApp
 			Point myPoint2 = new Point(30, 40);
 			graphics.DrawRectangle(pen, 0, 0, x - 1, y - 1);
 			return new Cursor(image.GetHicon());
+		}
+
+		void UpdateCursor()
+		{
+
 		}
 	}
 }
