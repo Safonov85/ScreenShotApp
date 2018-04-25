@@ -31,12 +31,22 @@ namespace ScreenShotApp
 
 			// pictureBox CLICK WORKING!!!!!!!!!!
 			pictureBox.Click += new EventHandler(picturebox_Click);
+			//pictureBox.
 		}
 
 		private void picturebox_Click(object sender, EventArgs e)
 		{
-			TakeCurrentScreenshoot(Control.MousePosition.X, Control.MousePosition.Y);
-			form.Close();
+			MouseEventArgs me = (MouseEventArgs)e;
+			if (me.Button == MouseButtons.Left)
+			{
+				TakeCurrentScreenshoot(Control.MousePosition.X, Control.MousePosition.Y);
+				form.Close();
+				return;
+			}
+			if(me.Button == MouseButtons.Right)
+			{
+				form.Close();
+			}
 		}
 
 		private void mouseUp(object sender, MouseEventArgs e)
@@ -56,10 +66,17 @@ namespace ScreenShotApp
 
 		private void form_KeyUp(object sender, KeyEventArgs e)
 		{
+			// CTRL Down
 			if (e.KeyCode == Keys.ControlKey)
 			{
 				ctrlDown = false;
 				Debug.WriteLine("keyUp pressed");
+			}
+
+			// Esc press EXIST!!!
+			if(e.KeyCode == Keys.Escape)
+			{
+				form.Close();
 			}
 		}
 
