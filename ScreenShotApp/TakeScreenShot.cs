@@ -13,6 +13,7 @@ namespace ScreenShotApp
 		bool ctrlDown = false;
 		int cursorSizeX, cursorSizeY;
 		PictureBox pictureBox = new PictureBox();
+		public string format = ".jpg";
 
 		public TakeScreenShot()
 		{
@@ -39,7 +40,7 @@ namespace ScreenShotApp
 			MouseEventArgs me = (MouseEventArgs)e;
 			if (me.Button == MouseButtons.Left)
 			{
-				TakeCurrentScreenshoot(Control.MousePosition.X, Control.MousePosition.Y);
+				TakeCurrentScreenshoot(Control.MousePosition.X, Control.MousePosition.Y, format, qualityAmount);
 				form.Close();
 				return;
 			}
@@ -132,36 +133,58 @@ namespace ScreenShotApp
 			}
 		}
 
-		public void TakeCurrentScreenshoot(int cursorPosX, int cursorPosY)
+		public void TakeCurrentScreenshoot(int cursorPosX, int cursorPosY, string format, Int64 quality)
 		{
 			Bitmap screen = new Bitmap(cursorSizeX, cursorSizeY);
 			Graphics graphics = Graphics.FromImage(screen);
 
-			float screenCapStartX = cursorSizeX - (cursorSizeX / 2);
-			float screenCapStartY = cursorSizeY - (cursorSizeY / 2);
-			float screenCapEndX = cursorSizeX + (cursorSizeX / 2);
-			float screenCapEndY = cursorSizeY + (cursorSizeY / 2);
+			//float screenCapStartX = cursorSizeX - (cursorSizeX / 2);
+			//float screenCapStartY = cursorSizeY - (cursorSizeY / 2);
+			//float screenCapEndX = cursorSizeX + (cursorSizeX / 2);
+			//float screenCapEndY = cursorSizeY + (cursorSizeY / 2);
+
+			//graphics.CopyFromScreen((int)screenCapStartX, (int)screenCapStartY, (int)screenCapEndX, (int)screenCapEndY, screen.Size);
 
 			float screenStartX = cursorPosX - (screen.Size.Width / 2);
 			float screenStartY = cursorPosY - (screen.Size.Height / 2);
 
-			//graphics.CopyFromScreen((int)screenCapStartX, (int)screenCapStartY, (int)screenCapEndX, (int)screenCapEndY, screen.Size);
+			// Crops the Exact Region
 			graphics.CopyFromScreen((int)screenStartX, (int)screenStartY, 0, 0, screen.Size);
+
 			string desktopPath = Environment.GetFolderPath(System.Environment.SpecialFolder.DesktopDirectory);
 
+			if (format == ".jpg")
+			{
+				ImageCodecInfo jpgEncoder = GetEncoder(ImageFormat.Jpeg);
+				System.Drawing.Imaging.Encoder myEncoder =
+					System.Drawing.Imaging.Encoder.Quality;
+				EncoderParameters myEncoderParameters = new EncoderParameters(1);
 
-			ImageCodecInfo jpgEncoder = GetEncoder(ImageFormat.Jpeg);
-			System.Drawing.Imaging.Encoder myEncoder =
-				System.Drawing.Imaging.Encoder.Quality;
-			EncoderParameters myEncoderParameters = new EncoderParameters(1);
+				EncoderParameter myEncoderParameter = new EncoderParameter(myEncoder, qualityAmount);
+				myEncoderParameters.Param[0] = myEncoderParameter;
+				screen.Save(desktopPath + "\\" + DateTime.Now.ToShortDateString() + DateTime.Now.Hour.ToString() + DateTime.Now.Minute.ToString() +
+					DateTime.Now.Second.ToString() + "Quality_" + quality.ToString() + format, jpgEncoder, myEncoderParameters);
+				//CreateNewScreen(screen);
+			}
+			else if (format == ".png")
+			{
+				screen.Save(desktopPath + "\\" + DateTime.Now.ToShortDateString() + DateTime.Now.Hour.ToString() + DateTime.Now.Minute.ToString() +
+					DateTime.Now.Second.ToString() + format, ImageFormat.Png);
+				//CreateNewScreen(screen);
+			}
+			//string desktopPath = Environment.GetFolderPath(System.Environment.SpecialFolder.DesktopDirectory);
+			//ImageCodecInfo jpgEncoder = GetEncoder(ImageFormat.Jpeg);
+			//System.Drawing.Imaging.Encoder myEncoder =
+			//	System.Drawing.Imaging.Encoder.Quality;
+			//EncoderParameters myEncoderParameters = new EncoderParameters(1);
 
-			EncoderParameter myEncoderParameter = new EncoderParameter(myEncoder, qualityAmount);
-			myEncoderParameters.Param[0] = myEncoderParameter;
-			screen.Save(desktopPath + "\\" + DateTime.Now.ToShortDateString() + DateTime.Now.Hour.ToString() + DateTime.Now.Minute.ToString() +
-				DateTime.Now.Second.ToString() + "Quality_" + qualityAmount.ToString() + ".jpg", jpgEncoder, myEncoderParameters);
+			//EncoderParameter myEncoderParameter = new EncoderParameter(myEncoder, qualityAmount);
+			//myEncoderParameters.Param[0] = myEncoderParameter;
+			//screen.Save(desktopPath + "\\" + DateTime.Now.ToShortDateString() + DateTime.Now.Hour.ToString() + DateTime.Now.Minute.ToString() +
+			//	DateTime.Now.Second.ToString() + "Quality_" + qualityAmount.ToString() + ".jpg", jpgEncoder, myEncoderParameters);
 		}
 
-		public void TakeSaveScreenshoot()
+		public void PutScreenshootOnScreen()
 		{
 			Bitmap screen = new Bitmap(SystemInformation.VirtualScreen.Width,
 							 SystemInformation.VirtualScreen.Height);
@@ -278,6 +301,13 @@ namespace ScreenShotApp
 			Point myPoint1 = new Point(10, 20);
 			Point myPoint2 = new Point(30, 40);
 			graphics.DrawRectangle(pen, 0, 0, x - 1, y - 1);
+
+			// blue circle
+			graphics.DrawEllipse(Pens.Blue, 0, 0, 50, 50);
+
+			// Text
+			graphics.DrawString("Scroll", new Font("Impact", 20, FontStyle.Regular), Brushes.Black, 0, 0);
+
 			return new Cursor(image.GetHicon());
 		}
 

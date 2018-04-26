@@ -79,8 +79,8 @@
 			this.PicFormatComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.PicFormatComboBox.FormattingEnabled = true;
 			this.PicFormatComboBox.Items.AddRange(new object[] {
-            ".JPG",
-            ".PNG"});
+            ".jpg",
+            ".png"});
 			this.PicFormatComboBox.Location = new System.Drawing.Point(12, 78);
 			this.PicFormatComboBox.Name = "PicFormatComboBox";
 			this.PicFormatComboBox.Size = new System.Drawing.Size(100, 21);

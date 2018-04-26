@@ -23,41 +23,16 @@ namespace ScreenShotApp
 			PicFormatComboBox.SelectedIndex = 0;
 		}
 
-		void SaveGraphics()
-		{
-			Bitmap image = new Bitmap(100, 100);
-			Graphics graphics = Graphics.FromImage(image);
-
-			//Graphics _g = pictureBox1.CreateGraphics();
-			Pen pen = new Pen(Color.Red, 1);
-			//pen.DashCap = System.Drawing.Drawing2D.DashCap.Flat;
-			pen.DashPattern = new float[] { 2.0F, 2.0F, 2.0F, 2.0F };
-			Point myPoint1 = new Point(10, 20);
-			Point myPoint2 = new Point(30, 40);
-			graphics.DrawRectangle(pen, 0, 0, 99, 99);
-
-			this.Cursor = CreateCursor(image);
-			
-			image.Dispose();
-			graphics.Dispose();
-		}
-
-		Cursor CreateCursor(Bitmap bitmap)
-		{
-			return new Cursor(bitmap.GetHicon());
-		}
-
 		private void TakeSSButton_Click(object sender, EventArgs e)
 		{
-			TakeScreenShotMethod();
-			//Cursor.Current = Cursors.Hand;
-			//SaveGraphics();
+			PrepareScreenShotMethod();
 		}
 
-		private void TakeScreenShotMethod()
+		private void PrepareScreenShotMethod()
 		{
 			this.Opacity = 0;
-			takeScreenShot.TakeSaveScreenshoot();
+			takeScreenShot.format = PicFormatComboBox.SelectedItem.ToString();
+			takeScreenShot.PutScreenshootOnScreen();
 			this.Opacity = 100;
 		}
 
