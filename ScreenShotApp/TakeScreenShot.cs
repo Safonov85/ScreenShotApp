@@ -14,6 +14,7 @@ namespace ScreenShotApp
 		int cursorSizeX, cursorSizeY;
 		PictureBox pictureBox = new PictureBox();
 		public string format = ".jpg";
+		string manualTutorial = "Scroll";
 
 		public TakeScreenShot()
 		{
@@ -102,7 +103,7 @@ namespace ScreenShotApp
 		// WORKING !!!!!!!!!!!!!!!!!
 		private void form_MouseWheel(object sender, MouseEventArgs e)
 		{
-			Debug.WriteLine(DateTime.Now.Second.ToString());
+			manualTutorial = "Scroll + Ctrl";
 			if (e.Delta == 120)
 			{
 				if (ctrlDown == false)
@@ -138,13 +139,6 @@ namespace ScreenShotApp
 			Bitmap screen = new Bitmap(cursorSizeX, cursorSizeY);
 			Graphics graphics = Graphics.FromImage(screen);
 
-			//float screenCapStartX = cursorSizeX - (cursorSizeX / 2);
-			//float screenCapStartY = cursorSizeY - (cursorSizeY / 2);
-			//float screenCapEndX = cursorSizeX + (cursorSizeX / 2);
-			//float screenCapEndY = cursorSizeY + (cursorSizeY / 2);
-
-			//graphics.CopyFromScreen((int)screenCapStartX, (int)screenCapStartY, (int)screenCapEndX, (int)screenCapEndY, screen.Size);
-
 			float screenStartX = cursorPosX - (screen.Size.Width / 2);
 			float screenStartY = cursorPosY - (screen.Size.Height / 2);
 
@@ -164,24 +158,12 @@ namespace ScreenShotApp
 				myEncoderParameters.Param[0] = myEncoderParameter;
 				screen.Save(desktopPath + "\\" + DateTime.Now.ToShortDateString() + DateTime.Now.Hour.ToString() + DateTime.Now.Minute.ToString() +
 					DateTime.Now.Second.ToString() + "Quality_" + quality.ToString() + format, jpgEncoder, myEncoderParameters);
-				//CreateNewScreen(screen);
 			}
 			else if (format == ".png")
 			{
 				screen.Save(desktopPath + "\\" + DateTime.Now.ToShortDateString() + DateTime.Now.Hour.ToString() + DateTime.Now.Minute.ToString() +
 					DateTime.Now.Second.ToString() + format, ImageFormat.Png);
-				//CreateNewScreen(screen);
 			}
-			//string desktopPath = Environment.GetFolderPath(System.Environment.SpecialFolder.DesktopDirectory);
-			//ImageCodecInfo jpgEncoder = GetEncoder(ImageFormat.Jpeg);
-			//System.Drawing.Imaging.Encoder myEncoder =
-			//	System.Drawing.Imaging.Encoder.Quality;
-			//EncoderParameters myEncoderParameters = new EncoderParameters(1);
-
-			//EncoderParameter myEncoderParameter = new EncoderParameter(myEncoder, qualityAmount);
-			//myEncoderParameters.Param[0] = myEncoderParameter;
-			//screen.Save(desktopPath + "\\" + DateTime.Now.ToShortDateString() + DateTime.Now.Hour.ToString() + DateTime.Now.Minute.ToString() +
-			//	DateTime.Now.Second.ToString() + "Quality_" + qualityAmount.ToString() + ".jpg", jpgEncoder, myEncoderParameters);
 		}
 
 		public void PutScreenshootOnScreen()
@@ -203,42 +185,8 @@ namespace ScreenShotApp
 
 			EncoderParameter myEncoderParameter = new EncoderParameter(myEncoder, qualityAmount);
 			myEncoderParameters.Param[0] = myEncoderParameter;
-			//screen.Save(desktopPath + "\\" + DateTime.Now.ToShortDateString() + DateTime.Now.Hour.ToString() + DateTime.Now.Minute.ToString() +
-			//	DateTime.Now.Second.ToString() + "Quality_" + quality.ToString() + format, jpgEncoder, myEncoderParameters);
 			CreateNewScreen(screen);
 			graphics.Dispose();
-		}
-
-		void SaveCurrentPositionToPicture(int quality, string format)
-		{
-			Bitmap screen = new Bitmap(pictureBox.Image.Width, pictureBox.Image.Height);
-
-		//	Graphics graphics = Graphics.FromImage(screen);
-
-		//	graphics.CopyFromScreen(SystemInformation.VirtualScreen.X,
-		//					 SystemInformation.VirtualScreen.Y,
-		//					 0, 0, screen.Size);
-			string desktopPath = Environment.GetFolderPath(System.Environment.SpecialFolder.DesktopDirectory);
-
-			if (format == ".jpg")
-			{
-				ImageCodecInfo jpgEncoder = GetEncoder(ImageFormat.Jpeg);
-				System.Drawing.Imaging.Encoder myEncoder =
-					System.Drawing.Imaging.Encoder.Quality;
-				EncoderParameters myEncoderParameters = new EncoderParameters(1);
-
-				EncoderParameter myEncoderParameter = new EncoderParameter(myEncoder, qualityAmount);
-				myEncoderParameters.Param[0] = myEncoderParameter;
-				screen.Save(desktopPath + "\\" + DateTime.Now.ToShortDateString() + DateTime.Now.Hour.ToString() + DateTime.Now.Minute.ToString() +
-					DateTime.Now.Second.ToString() + "Quality_" + quality.ToString() + format, jpgEncoder, myEncoderParameters);
-				CreateNewScreen(screen);
-			}
-			else if (format == ".png")
-			{
-				screen.Save(desktopPath + "\\" + DateTime.Now.ToShortDateString() + DateTime.Now.Hour.ToString() + DateTime.Now.Minute.ToString() +
-					DateTime.Now.Second.ToString() + format, ImageFormat.Png);
-				CreateNewScreen(screen);
-			}
 		}
 
 		private ImageCodecInfo GetEncoder(ImageFormat format)
@@ -266,24 +214,19 @@ namespace ScreenShotApp
 			form.FormBorderStyle = FormBorderStyle.None;
 			form.WindowState = FormWindowState.Maximized;
 			form.ShowDialog();
-			//form.Cursor = Cursors.Hand;
-			//Console.Write("");
 		}
 
+		// Test
 		void SaveGraphics()
 		{
 			Bitmap image = new Bitmap(100, 100);
 			Graphics graphics = Graphics.FromImage(image);
-
-			//Graphics _g = pictureBox1.CreateGraphics();
+			
 			Pen pen = new Pen(Color.Red, 1);
-			//pen.DashCap = System.Drawing.Drawing2D.DashCap.Flat;
 			pen.DashPattern = new float[] { 2.0F, 2.0F, 2.0F, 2.0F };
 			Point myPoint1 = new Point(10, 20);
 			Point myPoint2 = new Point(30, 40);
 			graphics.DrawRectangle(pen, 0, 0, 99, 99);
-
-			//this.Cursor = CreateCursor(image);
 
 			image.Dispose();
 			graphics.Dispose();
@@ -293,27 +236,20 @@ namespace ScreenShotApp
 		{
 			Bitmap image = new Bitmap(x, y);
 			Graphics graphics = Graphics.FromImage(image);
-
-			//Graphics _g = pictureBox1.CreateGraphics();
+			
 			Pen pen = new Pen(Color.Red, 2);
-			//pen.DashCap = System.Drawing.Drawing2D.DashCap.Flat;
 			pen.DashPattern = new float[] { 2.0F, 2.0F, 2.0F, 2.0F };
 			Point myPoint1 = new Point(10, 20);
 			Point myPoint2 = new Point(30, 40);
 			graphics.DrawRectangle(pen, 0, 0, x - 1, y - 1);
 
 			// blue circle
-			graphics.DrawEllipse(Pens.Blue, 0, 0, 50, 50);
+			//graphics.DrawEllipse(Pens.Blue, 0, 0, 50, 50);
 
 			// Text
-			graphics.DrawString("Scroll", new Font("Impact", 20, FontStyle.Regular), Brushes.Black, 0, 0);
+			graphics.DrawString(manualTutorial, new Font("Calibri", 20, FontStyle.Regular), Brushes.Black, 0, y - 50);
 
 			return new Cursor(image.GetHicon());
-		}
-
-		void UpdateCursor()
-		{
-
 		}
 	}
 }
